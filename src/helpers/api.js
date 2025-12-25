@@ -3,11 +3,9 @@ import env from '../config/env';
 
 const createUser = async (data) => {
     try {
-        const accessToken = Cookies.get("accessToken");
         const response = await axios.post(`${env.baseUrl}/api/v1/user`, data,
             {
                 headers: {
-                    accessToken: accessToken,
                     Authorization: `Basic ${env.basicAuth}`,
                     "content-type": "application/json"
                 },
