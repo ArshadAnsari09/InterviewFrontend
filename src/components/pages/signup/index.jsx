@@ -8,6 +8,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
+import { createUser } from "../../../helpers/api";
 
 const Signup = () => {
   const [formData, setFormData] = useState({ fullName: "", email: "", password: "",confirmPassword : "" });
@@ -32,7 +33,7 @@ const Signup = () => {
     return newErrors;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const newErrors = validate();
     if (Object.keys(newErrors).length === 0) {
@@ -42,7 +43,15 @@ const Signup = () => {
       setErrors(newErrors);
     }
     console.log("formData: ",formData);
-    
+    try {
+      const response = await createUser({...formData ,userType : 3});
+      console.log("newUser: ",response);
+      if(response.status === 200){
+        navigate("/");
+      }
+    } catch (error) {
+      console.log("error: ",error);
+    }
   };
 
   return (

@@ -8,6 +8,8 @@ import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
+import { login } from "../../../helpers/api";
+import Cookies from 'js-cookie';
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -31,7 +33,7 @@ const Login = () => {
     return newErrors;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const newErrors = validate();
     if (Object.keys(newErrors).length === 0) {
@@ -41,7 +43,16 @@ const Login = () => {
       setErrors(newErrors);
     }
     console.log("formData: ",formData);
-    
+    try {
+      const result = await login(formData);
+      if(result.status === 200){
+        Cookies.set("accessToken",result.res.accessToken);
+        
+        navigate("/");
+      }
+    } catch (error) {
+      console.log("error: ",error);
+    }
   };
 
   return (
