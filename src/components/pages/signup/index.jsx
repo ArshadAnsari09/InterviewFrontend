@@ -9,6 +9,8 @@ import IconButton from "@mui/material/IconButton";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
 import { createUser } from "../../../helpers/api";
+import {setCookie} from "../../../helpers/cookies";
+import {setLocalStorage} from "../../../helpers/localStorage";
 
 const Signup = () => {
   const [formData, setFormData] = useState({ fullName: "", email: "", password: "",confirmPassword : "" });
@@ -45,8 +47,9 @@ const Signup = () => {
     console.log("formData: ",formData);
     try {
       const response = await createUser({...formData ,userType : 3});
-      console.log("newUser: ",response);
       if(response.status === 200){
+        setCookie("accessToken",response.res.accessToken);
+        setLocalStorage("user",JSON.stringify(response.res.user));
         navigate("/");
       }
     } catch (error) {
@@ -101,7 +104,7 @@ const Signup = () => {
                   tabIndex={-1}
                   aria-label={showPassword ? "Hide password" : "Show password"}
                 >
-                  {showPassword ? <VisibilityOffOutlinedIcon /> : <VisibilityOutlinedIcon />}
+                  {showPassword ? <VisibilityOutlinedIcon /> : <VisibilityOffOutlinedIcon />}
                 </IconButton>
               </InputAdornment>
             ),
@@ -127,7 +130,7 @@ const Signup = () => {
                   tabIndex={-1}
                   aria-label={showConfirmPassword ? "Hide password" : "Show password"}
                 >
-                  {showConfirmPassword ? <VisibilityOffOutlinedIcon /> : <VisibilityOutlinedIcon />}
+                  {showConfirmPassword ? <VisibilityOutlinedIcon /> : <VisibilityOffOutlinedIcon />}
                 </IconButton>
               </InputAdornment>
             ),

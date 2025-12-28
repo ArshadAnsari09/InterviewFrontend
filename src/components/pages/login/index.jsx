@@ -9,7 +9,8 @@ import IconButton from "@mui/material/IconButton";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
 import { login } from "../../../helpers/api";
-import Cookies from 'js-cookie';
+import { setCookie } from "../../../helpers/cookies";
+import { setLocalStorage } from "../../../helpers/localStorage";
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -46,8 +47,8 @@ const Login = () => {
     try {
       const result = await login(formData);
       if(result.status === 200){
-        Cookies.set("accessToken",result.res.accessToken);
-        
+        setCookie("accessToken",result.res.accessToken);
+        setLocalStorage("user",JSON.stringify(result.res.user));
         navigate("/");
       }
     } catch (error) {
@@ -90,7 +91,7 @@ const Login = () => {
                   tabIndex={-1}
                   aria-label={showPassword ? "Hide password" : "Show password"}
                 >
-                  {showPassword ? <VisibilityOffOutlinedIcon /> : <VisibilityOutlinedIcon />}
+                  {showPassword ?  <VisibilityOutlinedIcon /> : <VisibilityOffOutlinedIcon />}
                 </IconButton>
               </InputAdornment>
             ),
