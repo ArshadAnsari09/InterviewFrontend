@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import AuthLayout from "../authLayout/index";
-
 import IWInput from "../../common/ui/IWInput";
 import IWButton from "../../common/ui/IWButton";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -49,7 +47,7 @@ const Login = () => {
       if(result.status === 200){
         setCookie("accessToken",result.res.accessToken);
         setLocalStorage("user",JSON.stringify(result.res.user));
-        navigate("/");
+        navigate("/home");
       }
     } catch (error) {
       console.log("error: ",error);
@@ -57,10 +55,7 @@ const Login = () => {
   };
 
   return (
-    <AuthLayout title="Welcome Back" subtitle="Please login to your account to continue">
       <div>
-        {/* {success && <IWAlert type="success">{success}</IWAlert>} */}
-
         <IWInput
           labelText="Email Address"
           type="email"
@@ -70,7 +65,7 @@ const Login = () => {
           errorText={errors.email}
           placeholder="you@example.com"
           fullWidth
-          sx={{mb: 2}}
+          sx={{mb: 2,mt:3}}
         />
 
         <IWInput
@@ -123,41 +118,9 @@ const Login = () => {
         >
           Login
         </IWButton>
-
-        <div style={{ position: "relative", margin: "24px 0" }}>
-          <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center" }}>
-            <div style={{ width: "100%", borderTop: "1px solid #e5e7eb" }} />
-          </div>
-          <div style={{ position: "relative", display: "flex", justifyContent: "center" }}>
-            <span style={{ padding: "0 8px", backgroundColor: "white", color: "#6b7280", fontSize: "0.875rem" }}>
-              OR
-            </span>
-          </div>
-        </div>
-
-        <div style={{ textAlign: "center" }}>
-          <p style={{ color: "#6b7280", fontSize: "0.875rem" }}>
-            Don&apos;t have an account?{" "}
-            <IWButton
-              type="button"
-              variant="text"
-              disableRipple
-              disableFocusRipple
-              onClick={() => navigate("/signup")}
-              sx={{
-                p: 0,
-                minWidth: "auto",
-                textTransform: "none",
-                "&:hover": { backgroundColor: "transparent" },
-              }}
-            >
-              Sign Up
-            </IWButton>
-          </p>
-        </div>
       </div>
-    </AuthLayout>
   );
 };
 
 export default Login;
+
